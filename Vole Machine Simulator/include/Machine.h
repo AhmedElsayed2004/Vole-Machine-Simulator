@@ -29,6 +29,9 @@ private:
 	// Returns false if it couldn't load a new program
 	bool LoadNewProgram();
 
+
+	void LoadInstructionsIntoMemory();
+
 public:
 	void Run();
 
