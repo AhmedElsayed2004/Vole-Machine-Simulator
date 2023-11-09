@@ -2,5 +2,5 @@
 
 struct Byte
 {
-	char arr[2];
+	char nibble[2];
 };
