@@ -10,6 +10,7 @@ void Machine::Run()
     ResetMachine();
     while (!LoadNewProgram())
         std::cout << "Please load a new program" << std::endl;
+
     cpu.programCounter = m_startAddress;
 
     while (choice != 5)
@@ -32,8 +33,8 @@ void Machine::Run()
         {
         case 1:
             ResetMachine();
-
             LoadNewProgram();
+
             cpu.programCounter = m_startAddress;
 
             break;
@@ -43,6 +44,14 @@ void Machine::Run()
             if (cpu.IsValidInstruction() && !cpu.isHalt)
             {
                 cpu.ExecuteInstruction();
+            }
+            else if (!cpu.IsValidInstruction())
+            {
+                std::cout << "Invalid Instruction at address " << cpu.programCounter << std::endl;
+            }
+            else if (cpu.isHalt)
+            {
+                std::cout << "Program has halted" << std::endl;
             }
             break;
         case 3:

@@ -70,27 +70,27 @@ Byte CPU::add(Byte b1, Byte b2)
 }
 void CPU::FetchInstruction()
 {
-	m_IR[0] = (m_memory + programCounter)->nibble[0];
-	m_IR[1] = (m_memory + programCounter)->nibble[1];
-	m_IR[2] = (m_memory + programCounter + 1)->nibble[0];
-	m_IR[3] = (m_memory + programCounter + 1)->nibble[1];
+	IR[0] = (m_memory + programCounter)->nibble[0];
+	IR[1] = (m_memory + programCounter)->nibble[1];
+	IR[2] = (m_memory + programCounter + 1)->nibble[0];
+	IR[3] = (m_memory + programCounter + 1)->nibble[1];
 }
 
 bool CPU::IsValidInstruction()
 {
 	for (auto& instruction : m_validInstructions)
 	{
-		if (m_IR[0] == instruction[0])
+		if (IR[0] == instruction[0])
 		{
 			for (int i = 0;i < 4;++i)
 			{
 				if (instruction[i] == 'R' || instruction[i] == 'S' || instruction[i] == 'T' || instruction[i] == 'X' || instruction[i] == 'Y')
 				{
-					if (!(m_IR[i] >= '0' && m_IR[i] <= '9') || !(m_IR[i] >= 'A' && m_IR[i] <= 'F')) return false;
+					if (!(IR[i] >= '0' && IR[i] <= '9') || !(IR[i] >= 'A' && IR[i] <= 'F')) return false;
 				}
 				else
 				{
-					if (m_IR[0] != instruction[i]) return false;
+					if (IR[0] != instruction[i]) return false;
 				}
 			}
 			return true;
@@ -101,62 +101,62 @@ bool CPU::IsValidInstruction()
 
 void CPU::ExecuteInstruction()
 {
-	if (m_IR[0] == '1')
+	if (IR[0] == '1')
 	{
 		std::string numberOfRegister = "";
 		std::string address = "";
-		numberOfRegister.push_back(m_IR[1]);
-		address.push_back(m_IR[2]);
-		address.push_back(m_IR[3]);
-		m_register[ToDecimal(numberOfRegister)] = *(m_memory + ToDecimal(address));
+		numberOfRegister.push_back(IR[1]);
+		address.push_back(IR[2]);
+		address.push_back(IR[3]);
+		cpuRegister[ToDecimal(numberOfRegister)] = *(m_memory + ToDecimal(address));
 	}
-	if (m_IR[0] == '2')
+	if (IR[0] == '2')
 	{
 		std::string numberOfRegister = "";
 		Byte bitPattern;
-		numberOfRegister.push_back(m_IR[1]);
-		bitPattern.nibble[0] = m_IR[2];
-		bitPattern.nibble[1] = m_IR[3];
-		m_register[ToDecimal(numberOfRegister)] = bitPattern;
+		numberOfRegister.push_back(IR[1]);
+		bitPattern.nibble[0] = IR[2];
+		bitPattern.nibble[1] = IR[3];
+		cpuRegister[ToDecimal(numberOfRegister)] = bitPattern;
 	}
-	if (m_IR[0] == '3')
+	if (IR[0] == '3')
 	{
 		std::string numberOfRegister = "";
 		std::string address = "";
-		numberOfRegister.push_back(m_IR[1]);
-		address.push_back(m_IR[2]);
-		address.push_back(m_IR[3]);
-		*(m_memory + ToDecimal(address)) = m_register[ToDecimal(numberOfRegister)];
+		numberOfRegister.push_back(IR[1]);
+		address.push_back(IR[2]);
+		address.push_back(IR[3]);
+		*(m_memory + ToDecimal(address)) = cpuRegister[ToDecimal(numberOfRegister)];
 	}
-	if (m_IR[0] == '4')
+	if (IR[0] == '4')
 	{
 		std::string numberOfRegister1 = "";
 		std::string numberOfRegister2 = "";
-		numberOfRegister1.push_back(m_IR[2]);
-		numberOfRegister2.push_back(m_IR[3]);
-		m_register[ToDecimal(numberOfRegister2)] = m_register[ToDecimal(numberOfRegister1)];
+		numberOfRegister1.push_back(IR[2]);
+		numberOfRegister2.push_back(IR[3]);
+		cpuRegister[ToDecimal(numberOfRegister2)] = cpuRegister[ToDecimal(numberOfRegister1)];
 	}
-	if (m_IR[0] == '5')
+	if (IR[0] == '5')
 	{
 		std::string numberOfRegister1 = "";
 		std::string numberOfRegister2 = "";
 		std::string numberOfRegister3 = "";
-		numberOfRegister1.push_back(m_IR[1]);
-		numberOfRegister2.push_back(m_IR[2]);
-		numberOfRegister2.push_back(m_IR[3]);
-		m_register[ToDecimal(numberOfRegister1)] = add(m_register[ToDecimal(numberOfRegister2)], m_register[ToDecimal(numberOfRegister3)]);
+		numberOfRegister1.push_back(IR[1]);
+		numberOfRegister2.push_back(IR[2]);
+		numberOfRegister2.push_back(IR[3]);
+		cpuRegister[ToDecimal(numberOfRegister1)] = add(cpuRegister[ToDecimal(numberOfRegister2)], cpuRegister[ToDecimal(numberOfRegister3)]);
 	}
-	if (m_IR[0] == '6')
+	if (IR[0] == '6')
 	{
 
 	}
-	if (m_IR[0] == 'B')
+	if (IR[0] == 'B')
 	{
 
 	}
-	if (m_IR[0] == 'C')
+	if (IR[0] == 'C')
 	{
-		m_isHalt = true;
+		isHalt = true;
 	}
 
 
@@ -165,5 +165,5 @@ void CPU::ExecuteInstruction()
 void CPU::ResetCPU()
 {
 	for (int i = 0; i < 15; ++i)
-		m_register[i] = { {'0','0'} };
+		cpuRegister[i] = { {'0','0'} };
 }

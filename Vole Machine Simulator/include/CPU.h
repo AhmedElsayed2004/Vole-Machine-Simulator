@@ -5,14 +5,14 @@
 class CPU
 {
 private:
-	Byte m_register[15];
 	Byte* m_memory;
-	std::string m_IR;
 	std::string m_validInstructions[8];
 	int ToDecimal(std::string HEX);
 	std::string ToHEX(int number);
 	Byte add(Byte b1, Byte b2);
 public:
+	Byte cpuRegister[15];
+	std::string IR;
 	bool isHalt = false;
 	int programCounter{};
 	CPU();
