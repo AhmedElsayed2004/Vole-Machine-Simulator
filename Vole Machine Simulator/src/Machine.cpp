@@ -7,8 +7,10 @@ void Machine::Run()
 {
     int choice{};
 
+    ResetMachine();
     while (!LoadNewProgram())
         std::cout << "Please load a new program" << std::endl;
+    cpu.programCounter = m_startAddress;
 
     while (choice != 5)
     {
@@ -29,10 +31,19 @@ void Machine::Run()
         switch (choice)
         {
         case 1:
-            //ResetMachine();
+            ResetMachine();
+
             LoadNewProgram();
+            cpu.programCounter = m_startAddress;
+
             break;
         case 2:
+            cpu.FetchInstruction();
+
+            if (cpu.IsValidInstruction() && !cpu.isHalt)
+            {
+                cpu.ExecuteInstruction();
+            }
             break;
         case 3:
             break;
@@ -133,4 +144,11 @@ bool Machine::SetStartAddress()
 
 void Machine::DisplayInfo(){}
 
-void Machine::ResetMachine(){}
+void Machine::ResetMachine()
+{
+    for (int i = 0; i < 256; ++i)
+        m_memory[i] = { {'0','0'} };
+
+    cpu.ResetCPU();
+
+}

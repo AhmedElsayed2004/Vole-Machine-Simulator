@@ -68,7 +68,7 @@ Byte CPU::add(Byte b1, Byte b2)
 	return result;
 
 }
-void CPU::FetchInstruction(int& programCounter)
+void CPU::FetchInstruction()
 {
 	m_IR[0] = (m_memory + programCounter)->nibble[0];
 	m_IR[1] = (m_memory + programCounter)->nibble[1];
@@ -160,4 +160,10 @@ void CPU::ExecuteInstruction()
 	}
 
 
+}
+
+void CPU::ResetCPU()
+{
+	for (int i = 0; i < 15; ++i)
+		m_register[i] = { {'0','0'} };
 }

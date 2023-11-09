@@ -2,7 +2,7 @@
 #include "Byte.h"
 #include <vector>
 #include <fstream>
-
+#include "CPU.h"
 
 class Machine
 {
@@ -14,7 +14,7 @@ private:
 	int m_startAddress;
 	std::vector<Byte> m_loadedInstructions;
 
-	bool m_validProgramLoaded = false;
+	CPU cpu;
 
 	// Loads all the instructions in a given file returns false if there was an error
 	bool LoadAllInstructions();
