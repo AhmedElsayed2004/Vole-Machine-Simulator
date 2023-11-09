@@ -3,6 +3,7 @@
 #include <string>
 #include <regex>
 
+
 void Machine::Run()
 {
     int choice{};
@@ -39,11 +40,11 @@ void Machine::Run()
 
             break;
         case 2:
-            cpu.FetchInstruction();
+            cpu.FetchInstruction(m_memory);
 
             if (cpu.IsValidInstruction() && !cpu.isHalt)
             {
-                cpu.ExecuteInstruction();
+                cpu.ExecuteInstruction(m_memory);
             }
             else if (!cpu.IsValidInstruction())
             {
@@ -93,6 +94,10 @@ bool Machine::LoadNewProgram()
             return false;
         }
     }
+
+    LoadInstructionsIntoMemory();
+
+    return true;
 }
 
 bool Machine::LoadAllInstructions()
@@ -136,6 +141,14 @@ bool Machine::LoadAllInstructions()
         }
     }
     return true;
+}
+
+void Machine::LoadInstructionsIntoMemory()
+{
+    for (int i = m_startAddress;i < m_startAddress + m_loadedInstructions.size();++i)
+    {
+        m_memory[i] = m_loadedInstructions[i - m_startAddress];
+    }
 }
 
 bool Machine::SetStartAddress()
