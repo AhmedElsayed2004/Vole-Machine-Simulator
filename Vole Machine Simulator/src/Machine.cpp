@@ -46,18 +46,37 @@ void Machine::Run()
             {
                 cpu.ExecuteInstruction(m_memory);
             }
-            else if (!cpu.IsValidInstruction())
-            {
-                std::cout << "Invalid Instruction at address " << cpu.programCounter << std::endl;
-            }
             else if (cpu.isHalt)
             {
                 std::cout << "Program has halted" << std::endl;
             }
+            else if (!cpu.IsValidInstruction())
+            {
+                std::cout << "Invalid Instruction at address " << cpu.programCounter << std::endl;
+            }
             break;
         case 3:
+            while (true)
+            {
+                cpu.FetchInstruction(m_memory);
+                if (cpu.IsValidInstruction() && !cpu.isHalt)
+                {
+                    cpu.ExecuteInstruction(m_memory);
+                }
+                else if (!cpu.IsValidInstruction())
+                {
+                    std::cout << "Invalid Instruction at address " << cpu.programCounter << std::endl;
+                    break;
+                }
+                else if (cpu.isHalt)
+                {
+                    std::cout << "Program has halted" << std::endl;
+                    break;
+                }
+            }
             break;
         case 4:
+            DisplayInfo();
             break;
         case 5:
             break;
@@ -164,13 +183,65 @@ bool Machine::SetStartAddress()
     return true;
 }
 
-void Machine::DisplayInfo(){}
+void Machine::DisplayInfo()
+{
+    std::cout << "        CPU        " << std::endl;
+    for (int i = 0; i < 18; i++)
+    {
+        if (i > 0 && i < 11)
+        {
+            if (i == 8)
+            {
+                std::cout << "|  " << 'R' << i - 1 << "  " << cpu.cpuRegister[i - 1].nibble[0]
+                    << cpu.cpuRegister[i - 1].nibble[1] << "  PC  " << cpu.programCounter;
+
+                // Calculate the number of digits
+                int NumOfDigits;
+                if (cpu.programCounter == 0)
+                {
+                    NumOfDigits = 1;
+                }
+                else
+                {
+                    NumOfDigits = log10(cpu.programCounter) + 1;
+                }
+
+                for (int i = 0; i < 5 - NumOfDigits; i++) {
+                    std::cout << " ";
+                }
+
+                std::cout << '|' << std::endl;
+
+                continue;
+            }
+            else if (i == 9)
+            {
+                std::cout << "|  " << 'R' << i - 1 << "  " << cpu.cpuRegister[i - 1].nibble[0]
+                    << cpu.cpuRegister[i - 1].nibble[1] << "  IR  " << cpu.IR[0] << cpu.IR[1] << cpu.IR[2] << cpu.IR[3] << " |" << std::endl;
+
+                continue;
+            }
+            std::cout << "|  " << 'R' << i - 1 << "  " << cpu.cpuRegister[i - 1].nibble[0] 
+                << cpu.cpuRegister[i - 1].nibble[1] << "           |" << std::endl;
+        }
+        else if (i > 10 && i < 17)
+        {
+            std::cout << "|  " << 'R' << char((i - 1) - 10 + 'A') << "  " << cpu.cpuRegister[i - 1].nibble[0] 
+                << cpu.cpuRegister[i - 1].nibble[1] << "           |" << std::endl;
+        }
+        else
+        {
+            std::cout << "---------------------" << std::endl;
+        }
+    }   
+}
 
 void Machine::ResetMachine()
 {
     for (int i = 0; i < 256; ++i)
         m_memory[i] = { {'0','0'} };
-
+    // Fix CPU IR
+    // Fix program counter overflow
     cpu.ResetCPU();
 
 }
