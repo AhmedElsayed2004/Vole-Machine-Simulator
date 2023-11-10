@@ -211,7 +211,26 @@ void CPU::ExecuteInstruction(Byte mainMemory[])
 	}
 	if (IR[0] == 'B')
 	{
+		std::string numberOfRegister1 = "";
+		std::string address = "";
 
+		// Take a number of register from instruction
+		numberOfRegister1.push_back(IR[1]);
+
+		// Take a address from instruction
+		address.push_back(IR[2]);
+		address.push_back(IR[3]);
+
+		// Compare between register IR[1] and register 0
+		if (cpuRegister[ToDecimal(numberOfRegister1)].nibble[0] == cpuRegister[0].nibble[0] && 
+			cpuRegister[ToDecimal(numberOfRegister1)].nibble[1] == cpuRegister[0].nibble[1])
+		{
+			programCounter = ToDecimal(address);
+		}
+		else
+		{
+			programCounter += 2;
+		}
 	}
 	if (IR[0] == 'C')
 	{
@@ -227,4 +246,5 @@ void CPU::ResetCPU()
 {
 	for (int i = 0; i < 16; ++i)
 		cpuRegister[i] = { {'0','0'} };
+	// Fix CPU IR
 }
