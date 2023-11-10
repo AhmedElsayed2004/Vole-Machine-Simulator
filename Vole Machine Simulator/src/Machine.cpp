@@ -233,7 +233,58 @@ void Machine::DisplayInfo()
         {
             std::cout << "---------------------" << std::endl;
         }
-    }   
+    }
+	
+    for (int i = 0; i < 35; i++)
+    {
+        std::cout << " ";
+    }
+    std::cout << "Main Memory";
+    for (int i = 0; i < 35; i++)
+    {
+        std::cout << " ";
+    }
+    
+    std::cout << std::endl;
+
+    for (int i = 0; i < 90; i++)
+    {
+        std::cout << "-";
+    }
+
+    std::cout << std::endl;
+    
+    std::cout << "|      ";
+    for (int i = 0; i < 16; i++)
+    {
+        if (i < 10)
+            std::cout << i << "    ";
+        else
+            std::cout << char('A' + (i - 10)) << "    ";
+    }
+    
+    std::cout << "  |" << std::endl;
+
+    for (int i = 0; i < 16; i++)
+    {
+        if (i < 10)
+            std::cout << "|  " << i << "   ";
+        else
+            std::cout << "|  " << char('A' + (i - 10)) << "   ";
+
+        for (int j = i * 16; j < (i + 1) * 16; j++)
+        {
+            std::cout << m_memory[j].nibble[0] << m_memory[j].nibble[1] << "   ";
+        }
+        std::cout << "  |" << std::endl;
+    }
+
+    for (int i = 0; i < 90; i++)
+    {
+        std::cout << "-";
+    }
+    
+    std::cout << std::endl;
 }
 
 void Machine::ResetMachine()
