@@ -63,14 +63,16 @@ void Machine::Run()
                 {
                     cpu.ExecuteInstruction(m_memory);
                 }
-                else if (!cpu.IsValidInstruction())
-                {
-                    std::cout << "Invalid Instruction at address " << cpu.programCounter << std::endl;
-                    break;
-                }
+
                 else if (cpu.isHalt)
                 {
                     std::cout << "Program has halted" << std::endl;
+                    break;
+                }
+
+                else if (!cpu.IsValidInstruction())
+                {
+                    std::cout << "Invalid Instruction at address " << cpu.programCounter << std::endl;
                     break;
                 }
             }
