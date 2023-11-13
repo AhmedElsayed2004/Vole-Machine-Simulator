@@ -293,8 +293,8 @@ void Machine::ResetMachine()
 {
     for (int i = 0; i < 256; ++i)
         m_memory[i] = { {'0','0'} };
-    // Fix CPU IR
-    // Fix program counter overflow
+
     cpu.ResetCPU();
+
 
 }

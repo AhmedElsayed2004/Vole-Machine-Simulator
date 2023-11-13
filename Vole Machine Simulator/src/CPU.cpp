@@ -244,5 +244,5 @@ void CPU::ResetCPU()
 {
 	for (int i = 0; i < 16; ++i)
 		cpuRegister[i] = { {'0','0'} };
-	// Fix CPU IR
+	IR = "0000";
 }
