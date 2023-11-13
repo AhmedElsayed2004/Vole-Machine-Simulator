@@ -17,6 +17,7 @@ private:
 
 	// Add two Byte number in twoscomplement format
 	Byte add(Byte b1, Byte b2);
+
 public:
 	Byte cpuRegister[16];
 	std::string IR="0000";

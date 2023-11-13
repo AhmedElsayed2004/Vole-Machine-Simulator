@@ -189,6 +189,7 @@ void CPU::ExecuteInstruction(Byte mainMemory[])
 
 		programCounter += 2;
 	}
+
 	if (IR[0] == '5')
 	{
 		std::string numberOfRegister1 = "";
@@ -205,10 +206,7 @@ void CPU::ExecuteInstruction(Byte mainMemory[])
 
 		programCounter += 2;
 	}
-	if (IR[0] == '6')
-	{
 
-	}
 	if (IR[0] == 'B')
 	{
 		std::string numberOfRegister1 = "";
