@@ -99,6 +99,8 @@ bool Machine::LoadNewProgram()
     if (!m_inputFile.is_open()) 
     {
         std::cout << "Error opening the file" << std::endl;
+
+        m_inputFile.close();
         return false;
     }
     else
@@ -112,12 +114,14 @@ bool Machine::LoadNewProgram()
         }
         else
         {
+            m_inputFile.close();
             return false;
         }
     }
 
     LoadInstructionsIntoMemory();
 
+    m_inputFile.close();
     return true;
 }
 
@@ -291,6 +295,7 @@ void Machine::DisplayInfo()
 
 void Machine::ResetMachine()
 {
+    m_loadedInstructions.clear();
     for (int i = 0; i < 256; ++i)
         m_memory[i] = { {'0','0'} };
 
